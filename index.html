@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="sk">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>$GIGI - Gemini's New Mascot 🎭</title>
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             margin: 0;
@@ -12,36 +14,20 @@
         }
         
         body {
-            font-family: 'Orbitron', 'Arial', sans-serif;
+            font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #0a0f3d 0%, #1a1a3e 25%, #2d4a87 50%, #1e3c72 75%, #0a0f3d 100%);
             color: #00ffff;
             overflow-x: hidden;
             position: relative;
-            cursor: none;
-        }
-        
-        /* Cool mouse trail */
-        .mouse-trail {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.8) 0%, rgba(33, 150, 243, 0.4) 50%, transparent 100%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            animation: trailPulse 1s ease-out infinite;
-            mix-blend-mode: screen;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
-        }
-        
-        @keyframes trailPulse {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
+            min-height: 100vh;
         }
         
         /* Custom cursor */
-        body::after {
-            content: '';
+        body {
+            cursor: none;
+        }
+        
+        .custom-cursor {
             position: fixed;
             width: 12px;
             height: 12px;
@@ -51,14 +37,32 @@
             z-index: 10000;
             box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
             animation: cursorGlow 2s ease-in-out infinite alternate;
-            left: var(--mouse-x, 0px);
-            top: var(--mouse-y, 0px);
             transform: translate(-50%, -50%);
+            mix-blend-mode: screen;
         }
         
         @keyframes cursorGlow {
             0% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); }
             100% { box-shadow: 0 0 25px rgba(0, 255, 255, 1), 0 0 35px rgba(33, 150, 243, 0.6); }
+        }
+        
+        /* Mouse trail */
+        .mouse-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.8) 0%, rgba(33, 150, 243, 0.4) 50%, transparent 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            animation: trailPulse 1s ease-out forwards;
+            mix-blend-mode: screen;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+        }
+        
+        @keyframes trailPulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
         }
         
         /* Animated background grid */
@@ -108,6 +112,7 @@
             top: 20%;
             right: 10%;
             animation-delay: -5s;
+            border-top: none;
         }
         
         .shape3 {
@@ -118,6 +123,7 @@
             bottom: 20%;
             left: 15%;
             animation-delay: -10s;
+            border: none;
         }
         
         @keyframes floatShape {
@@ -168,6 +174,15 @@
             filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.8));
             border-radius: 50%;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
         .logo::before {
@@ -353,7 +368,7 @@
         }
         
         .holo-card:hover {
-            transform: translateY(-10px) rotateX(5deg);
+            transform: translateY(-10px) rotateX(5deg) scale(1.02);
             box-shadow: 
                 0 20px 40px rgba(0, 255, 255, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -382,98 +397,10 @@
             text-shadow: 0 0 5px rgba(179, 229, 252, 0.5);
         }
         
-        /* Neon button */
-        .neon-button {
-            display: inline-block;
-            padding: 20px 50px;
-            background: transparent;
-            border: 2px solid #00ffff;
-            border-radius: 50px;
-            color: #00ffff;
-            text-decoration: none;
-            font-size: 1.5rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            position: relative;
-            transition: all 0.3s ease;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.3),
-                inset 0 0 20px rgba(0, 255, 255, 0.1);
-            animation: neonPulse 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes neonPulse {
-            0% { 
-                box-shadow: 
-                    0 0 20px rgba(0, 255, 255, 0.3),
-                    inset 0 0 20px rgba(0, 255, 255, 0.1);
-            }
-            100% { 
-                box-shadow: 
-                    0 0 30px rgba(0, 255, 255, 0.6),
-                    inset 0 0 30px rgba(0, 255, 255, 0.2);
-            }
-        }
-        
-        .neon-button:hover {
-            background: rgba(0, 255, 255, 0.1);
-            color: #ffffff;
-            box-shadow: 
-                0 0 40px rgba(0, 255, 255, 0.8),
-                inset 0 0 40px rgba(0, 255, 255, 0.3);
-            transform: scale(1.05);
-        }
-        
-        .neon-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-        }
-        
-        .neon-button:hover::before {
-            transform: translateX(100%);
-        }
-        
-        /* Chart container */
-        .chart-container {
-            background: linear-gradient(135deg, 
-                rgba(0, 0, 0, 0.3),
-                rgba(33, 150, 243, 0.1)
-            );
-            border-radius: 15px;
-            padding: 10px;
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.1);
-        }
-        
-        .token-info {
-            text-align: center;
-            margin-top: 15px;
-        }
-        
-        .token-info p {
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: #00ffff;
-            background: rgba(0, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            word-break: break-all;
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
-        }
-        
-        /* Media grid */
-        .media-grid {
+        /* Media cards */
+        .media-grid-main {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
             margin: 60px 0;
         }
@@ -494,6 +421,9 @@
             transition: all 0.4s ease;
             overflow: hidden;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .media-card::before {
@@ -554,6 +484,340 @@
             font-weight: bold;
         }
         
+        /* Neon button */
+        .neon-button {
+            display: inline-block;
+            padding: 20px 50px;
+            background: transparent;
+            border: 2px solid #00ffff;
+            border-radius: 50px;
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.3),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+            animation: neonPulse 2s ease-in-out infinite alternate;
+            cursor: pointer;
+        }
+        
+        @keyframes neonPulse {
+            0% { 
+                box-shadow: 
+                    0 0 20px rgba(0, 255, 255, 0.3),
+                    inset 0 0 20px rgba(0, 255, 255, 0.1);
+            }
+            100% { 
+                box-shadow: 
+                    0 0 30px rgba(0, 255, 255, 0.6),
+                    inset 0 0 30px rgba(0, 255, 255, 0.2);
+            }
+        }
+        
+        .neon-button:hover {
+            background: rgba(0, 255, 255, 0.1);
+            color: #ffffff;
+            box-shadow: 
+                0 0 40px rgba(0, 255, 255, 0.8),
+                inset 0 0 40px rgba(0, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .neon-button:hover::before {
+            transform: translateX(100%);
+        }
+        
+        /* Chart container */
+        .chart-container {
+            background: linear-gradient(135deg, 
+                rgba(0, 0, 0, 0.3),
+                rgba(33, 150, 243, 0.1)
+            );
+            border-radius: 15px;
+            padding: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+        
+        .chart-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 15px 35px rgba(0, 255, 255, 0.3),
+                inset 0 0 30px rgba(0, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.5);
+        }
+        
+        /* Gallery Modal */
+        .gallery-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .gallery-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .gallery-content {
+            width: 95%;
+            max-width: 1200px;
+            height: 90vh;
+            background: linear-gradient(135deg, 
+                rgba(33, 150, 243, 0.15),
+                rgba(76, 175, 80, 0.15),
+                rgba(255, 87, 34, 0.1)
+            );
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .gallery-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .gallery-title {
+            font-size: 2rem;
+            color: #00ffff;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+        }
+        
+        .close-gallery {
+            background: rgba(255, 87, 34, 0.8);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 87, 34, 0.5);
+        }
+        
+        .close-gallery:hover {
+            background: rgba(255, 87, 34, 1);
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 87, 34, 0.8);
+        }
+        
+        .gallery-body {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        /* Upload zone */
+        .upload-zone {
+            border: 2px dashed rgba(0, 255, 255, 0.4);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            background: rgba(0, 255, 255, 0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: rgba(0, 255, 255, 0.8);
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            transform: scale(1.02);
+        }
+        
+        .upload-icon {
+            font-size: 4rem;
+            color: #00ffff;
+            margin-bottom: 15px;
+            animation: uploadFloat 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.6));
+        }
+        
+        @keyframes uploadFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.1); }
+        }
+        
+        .upload-text {
+            font-size: 1.3rem;
+            color: #00ffff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+        }
+        
+        .upload-subtext {
+            font-size: 1rem;
+            color: #b3e5fc;
+            opacity: 0.8;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        /* Rate limit info */
+        .rate-limit-info {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #FFC107;
+            text-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+        }
+        
+        .rate-limit-info strong {
+            color: #FF5722;
+            text-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
+        }
+        
+        /* Gallery grid */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .media-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            background: rgba(0, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .media-item:hover {
+            transform: scale(1.05);
+            border-color: rgba(0, 255, 255, 0.8);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+        }
+        
+        .media-item img,
+        .media-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 13px;
+        }
+        
+        .media-item video {
+            cursor: pointer;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+            text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Status messages */
+        .status-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            animation: statusFade 0.3s ease;
+        }
+        
+        @keyframes statusFade {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .status-success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #4CAF50;
+            text-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+        
+        .status-error {
+            background: rgba(255, 87, 34, 0.2);
+            border: 1px solid rgba(255, 87, 34, 0.5);
+            color: #FF5722;
+            text-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
+        }
+        
+        .status-warning {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            color: #FFC107;
+            text-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+        }
+        
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00ffff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         /* Footer */
         footer {
             background: linear-gradient(135deg, 
@@ -569,41 +833,6 @@
             box-shadow: 0 0 50px rgba(0, 255, 255, 0.2);
         }
         
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 40px 0;
-        }
-        
-        .social-icon {
-            width: 70px;
-            height: 70px;
-            border: 2px solid #00ffff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: #00ffff;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-            animation: socialPulse 3s ease-in-out infinite;
-        }
-        
-        @keyframes socialPulse {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.05) rotate(5deg); }
-        }
-        
-        .social-icon:hover {
-            background: rgba(0, 255, 255, 0.2);
-            transform: scale(1.2) rotate(360deg);
-            box-shadow: 0 0 40px rgba(0, 255, 255, 0.6);
-        }
-        
         /* Mobile responsive */
         @media (max-width: 768px) {
             .title {
@@ -617,6 +846,7 @@
             .logo {
                 width: 150px;
                 height: 150px;
+                font-size: 3rem;
             }
             
             .holo-card {
@@ -627,13 +857,23 @@
                 font-size: 2rem;
             }
             
-            .social-links {
+            .media-grid-main {
+                grid-template-columns: 1fr;
                 gap: 20px;
+            }
+            
+            .gallery-content {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Custom cursor -->
+    <div class="custom-cursor" id="customCursor"></div>
+    
     <!-- Floating shapes -->
     <div class="shape shape1"></div>
     <div class="shape shape2"></div>
@@ -642,7 +882,7 @@
     <header>
         <div class="container">
             <div class="logo-container">
-                <div class="logo"></div>
+                <div class="logo" id="logo"></div>
             </div>
             <div class="title">$GIGI</div>
             <div class="subtitle">🎭 Gemini's New Mascot 🚀</div>
@@ -666,23 +906,28 @@
                 </div>
             </div>
             
-            <div class="media-grid">
-                <div class="media-card">
+            <div class="media-grid-main">
+                <!-- Images Card -->
+                <div class="media-card" id="imagesCard">
                     <div class="media-placeholder">
                         <span class="media-icon">🖼️</span>
-                        <span class="media-label">Images</span>
+                        <span class="media-label">Images Gallery</span>
                     </div>
                 </div>
-                <div class="media-card">
+                
+                <!-- Videos Card -->
+                <div class="media-card" id="videosCard">
                     <div class="media-placeholder">
                         <span class="media-icon">🎥</span>
-                        <span class="media-label">Videos</span>
+                        <span class="media-label">Videos Gallery</span>
                     </div>
                 </div>
-                <div class="media-card">
+                
+                <!-- Socials Card -->
+                <div class="media-card" id="socialsCard">
                     <div class="media-placeholder">
                         <span class="media-icon">📱</span>
-                        <span class="media-label">Social</span>
+                        <span class="media-label">Social Media</span>
                     </div>
                 </div>
             </div>
@@ -700,105 +945,531 @@
         </div>
     </footer>
     
+    <!-- Gallery Modal -->
+    <div class="gallery-modal" id="galleryModal">
+        <div class="gallery-content">
+            <div class="gallery-header">
+                <h2 class="gallery-title" id="galleryTitle">Gallery</h2>
+                <button class="close-gallery" id="closeGallery">×</button>
+            </div>
+            <div class="gallery-body">
+                <div class="rate-limit-info" id="rateLimitInfo">
+                    <strong>Upload Limits:</strong> Images: 10 per hour | Videos: 2 per hour | Max file size: 10MB
+                </div>
+                
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon" id="uploadIcon">📁</div>
+                    <div class="upload-text">Drop files here or click to upload</div>
+                    <div class="upload-subtext" id="uploadSubtext">Supported: JPG, PNG, MP4, MOV</div>
+                    <input type="file" class="file-input" id="fileInput" multiple>
+                </div>
+                
+                <div id="statusMessages"></div>
+                
+                <div class="media-grid" id="mediaGrid">
+                    <!-- Media items will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script>
-        // Interactive animations
-        document.addEventListener('DOMContentLoaded', function() {
-            // Mouse trail effect
-            let trails = [];
-            const maxTrails = 15;
+        // SUPABASE SETTINGS - CHANGE ACCORDING TO YOUR PROJECT
+        const SUPABASE_URL = 'https://ujwvvqnwyyklbxmnykix.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqd3Z2cW53eXlrbGJ4bW55a2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYwNjI3NDAsImV4cCI6MjA3MTYzODc0MH0.5Iwq_0trhCkuMeCGlFO5j2AlOgRQ-BYra9CoZQGgfxU';
+        const BUCKET_NAME = 'media';
+        
+        let supabaseClient = null;
+        
+        // Initialize after page load
+        window.addEventListener('load', function() {
+            console.log('Checking Supabase...', window.supabase);
             
-            document.addEventListener('mousemove', function(e) {
-                // Update cursor position
-                document.body.style.setProperty('--mouse-x', e.clientX + 'px');
-                document.body.style.setProperty('--mouse-y', e.clientY + 'px');
+            if (window.supabase && window.supabase.createClient) {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase initialized successfully');
+                showStatus('🚀 Upload system ready!', 'success');
+            } else {
+                console.error('❌ Supabase not loaded');
+                showStatus('❌ Upload system unavailable', 'error');
+            }
+        });
+        
+        // Rate limiting (in memory)
+        let uploadLimits = {
+            images: { count: 0, resetTime: Date.now() + 3600000 },
+            videos: { count: 0, resetTime: Date.now() + 3600000 }
+        };
+        
+        const MAX_IMAGES_PER_HOUR = 10;
+        const MAX_VIDEOS_PER_HOUR = 2;
+        const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+        
+        let currentGalleryType = null;
+        
+        // Helper functions
+        function resetRateLimits() {
+            const now = Date.now();
+            if (now > uploadLimits.images.resetTime) {
+                uploadLimits.images = { count: 0, resetTime: now + 3600000 };
+            }
+            if (now > uploadLimits.videos.resetTime) {
+                uploadLimits.videos = { count: 0, resetTime: now + 3600000 };
+            }
+        }
+        
+        function canUpload(fileType) {
+            resetRateLimits();
+            if (fileType === 'image') {
+                return uploadLimits.images.count < MAX_IMAGES_PER_HOUR;
+            } else if (fileType === 'video') {
+                return uploadLimits.videos.count < MAX_VIDEOS_PER_HOUR;
+            }
+            return false;
+        }
+        
+        function updateRateLimit(fileType) {
+            if (fileType === 'image') {
+                uploadLimits.images.count++;
+            } else if (fileType === 'video') {
+                uploadLimits.videos.count++;
+            }
+        }
+        
+        function showStatus(message, type = 'info') {
+            const statusContainer = document.getElementById('statusMessages');
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status-message status-${type}`;
+            statusDiv.innerHTML = message;
+            statusContainer.appendChild(statusDiv);
+            
+            setTimeout(() => {
+                if (statusDiv.parentNode) {
+                    statusDiv.parentNode.removeChild(statusDiv);
+                }
+            }, 5000);
+        }
+        
+        function getFileType(file) {
+            if (file.type.startsWith('image/')) return 'image';
+            if (file.type.startsWith('video/')) return 'video';
+            return 'unknown';
+        }
+        
+        function validateFile(file) {
+            const fileType = getFileType(file);
+            
+            if (fileType === 'unknown') {
+                return { valid: false, error: 'Unsupported file type' };
+            }
+            
+            if (file.size > MAX_FILE_SIZE) {
+                return { valid: false, error: 'File is too large (max 10MB)' };
+            }
+            
+            if (!canUpload(fileType)) {
+                const limit = fileType === 'image' ? MAX_IMAGES_PER_HOUR : MAX_VIDEOS_PER_HOUR;
+                return { valid: false, error: `Upload limit reached: ${limit} ${fileType === 'image' ? 'images' : 'videos'} per hour` };
+            }
+            
+            return { valid: true };
+        }
+        
+        // Upload file to Supabase
+        async function uploadFile(file) {
+            if (!supabaseClient) {
+                showStatus('❌ Upload system not ready', 'error');
+                return null;
+            }
+            
+            const validation = validateFile(file);
+            if (!validation.valid) {
+                showStatus(validation.error, 'error');
+                return null;
+            }
+            
+            const fileType = getFileType(file);
+            const timestamp = Date.now();
+            const randomId = Math.random().toString(36).substring(7);
+            const extension = file.name.split('.').pop();
+            const fileName = `${fileType}s/${timestamp}_${randomId}.${extension}`;
+            
+            try {
+                showStatus(`<span class="loading-spinner"></span>Uploading ${file.name}...`, 'info');
                 
-                // Create trail particle
-                const trail = document.createElement('div');
-                trail.className = 'mouse-trail';
-                trail.style.left = e.clientX - 10 + 'px';
-                trail.style.top = e.clientY - 10 + 'px';
-                document.body.appendChild(trail);
+                const { data, error } = await supabaseClient.storage
+                    .from(BUCKET_NAME)
+                    .upload(fileName, file, {
+                        cacheControl: '3600',
+                        upsert: false
+                    });
                 
-                trails.push(trail);
+                if (error) {
+                    console.error('Upload error:', error);
+                    showStatus(`❌ Upload error: ${error.message}`, 'error');
+                    return null;
+                }
                 
-                // Remove old trails
-                if (trails.length > maxTrails) {
-                    const oldTrail = trails.shift();
-                    if (oldTrail && oldTrail.parentNode) {
-                        oldTrail.parentNode.removeChild(oldTrail);
+                updateRateLimit(fileType);
+                showStatus(`✅ ${file.name} uploaded successfully!`, 'success');
+                return data;
+                
+            } catch (error) {
+                console.error('Upload failed:', error);
+                showStatus(`❌ Error: ${error.message}`, 'error');
+                return null;
+            }
+        }
+        
+        // Load media from Supabase
+        async function loadMedia(type) {
+            if (!supabaseClient) {
+                showStatus('❌ Cannot load media - system not ready', 'error');
+                return [];
+            }
+            
+            try {
+                const folder = type === 'images' ? 'images' : 'videos';
+                
+                const { data, error } = await supabaseClient.storage
+                    .from(BUCKET_NAME)
+                    .list(folder, {
+                        limit: 100,
+                        sortBy: { column: 'created_at', order: 'desc' }
+                    });
+                
+                if (error) {
+                    console.error('Load error:', error);
+                    showStatus(`❌ Loading error: ${error.message}`, 'error');
+                    return [];
+                }
+                
+                return data || [];
+                
+            } catch (error) {
+                console.error('Load failed:', error);
+                showStatus(`❌ Error: ${error.message}`, 'error');
+                return [];
+            }
+        }
+        
+        // Get public URL for file
+        function getPublicUrl(filePath) {
+            if (!supabaseClient) return '';
+            
+            const { data } = supabaseClient.storage
+                .from(BUCKET_NAME)
+                .getPublicUrl(filePath);
+            return data.publicUrl;
+        }
+        
+        // Render media grid
+        async function renderMediaGrid(type) {
+            const mediaGrid = document.getElementById('mediaGrid');
+            mediaGrid.innerHTML = '<div style="text-align: center; color: #00ffff; padding: 20px; grid-column: 1/-1;"><span class="loading-spinner"></span>Loading...</div>';
+            
+            const mediaFiles = await loadMedia(type);
+            mediaGrid.innerHTML = '';
+            
+            if (mediaFiles.length === 0) {
+                mediaGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; color: #00ffff; padding: 40px;">
+                        <div style="font-size: 3rem; margin-bottom: 20px; opacity: 0.5;">${type === 'images' ? '🖼️' : '🎥'}</div>
+                        <div style="font-size: 1.2rem; opacity: 0.7;">No ${type === 'images' ? 'images' : 'videos'} yet</div>
+                        <div style="font-size: 1rem; opacity: 0.5; margin-top: 10px;">Upload the first file!</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            mediaFiles.forEach(file => {
+                const filePath = `${type === 'images' ? 'images' : 'videos'}/${file.name}`;
+                const publicUrl = getPublicUrl(filePath);
+                
+                const mediaItem = document.createElement('div');
+                mediaItem.className = 'media-item';
+                
+                if (type === 'images') {
+                    mediaItem.innerHTML = `
+                        <img src="${publicUrl}" alt="${file.name}" loading="lazy" 
+                             onerror="this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;color:#ff5722;\\'>❌ Error loading</div>'">
+                    `;
+                } else {
+                    mediaItem.innerHTML = `
+                        <video src="${publicUrl}" preload="metadata" 
+                               onerror="this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;color:#ff5722;\\'>❌ Error loading</div>'"></video>
+                        <div class="video-overlay">▶</div>
+                    `;
+                    
+                    const video = mediaItem.querySelector('video');
+                    if (video) {
+                        video.addEventListener('click', () => {
+                            if (video.paused) {
+                                video.play();
+                                mediaItem.querySelector('.video-overlay').style.display = 'none';
+                            } else {
+                                video.pause();
+                                mediaItem.querySelector('.video-overlay').style.display = 'block';
+                            }
+                        });
                     }
                 }
                 
-                // Auto remove after animation
-                setTimeout(() => {
-                    if (trail && trail.parentNode) {
-                        trail.parentNode.removeChild(trail);
-                        const index = trails.indexOf(trail);
-                        if (index > -1) {
-                            trails.splice(index, 1);
-                        }
+                mediaGrid.appendChild(mediaItem);
+            });
+        }
+        
+        // Handle file uploads
+        async function handleFiles(files) {
+            const filesArray = Array.from(files);
+            const validFiles = filesArray.filter(file => {
+                const fileType = getFileType(file);
+                return currentGalleryType === 'images' ? fileType === 'image' : fileType === 'video';
+            });
+            
+            if (validFiles.length === 0) {
+                showStatus('⚠️ No valid files to upload', 'warning');
+                return;
+            }
+            
+            // Upload files sequentially
+            for (const file of validFiles) {
+                const result = await uploadFile(file);
+                if (result) {
+                    // Refresh gallery after successful upload
+                    setTimeout(() => renderMediaGrid(currentGalleryType), 1000);
+                }
+            }
+        }
+        
+        // Custom cursor tracking
+        const customCursor = document.getElementById('customCursor');
+        
+        document.addEventListener('mousemove', function(e) {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+            
+            // Create trail effect
+            createTrail(e.clientX, e.clientY);
+        });
+        
+        // Mouse trail effect
+        let trailElements = [];
+        const maxTrails = 15;
+        
+        function createTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.className = 'mouse-trail';
+            trail.style.left = (x - 10) + 'px';
+            trail.style.top = (y - 10) + 'px';
+            document.body.appendChild(trail);
+            
+            trailElements.push(trail);
+            
+            if (trailElements.length > maxTrails) {
+                const oldTrail = trailElements.shift();
+                if (oldTrail && oldTrail.parentNode) {
+                    oldTrail.parentNode.removeChild(oldTrail);
+                }
+            }
+            
+            // Remove trail after animation
+            setTimeout(() => {
+                if (trail && trail.parentNode) {
+                    trail.parentNode.removeChild(trail);
+                    const index = trailElements.indexOf(trail);
+                    if (index > -1) {
+                        trailElements.splice(index, 1);
                     }
-                }, 1000);
+                }
+            }, 1000);
+        }
+        
+        // Gallery functionality
+        function openGallery(type) {
+            currentGalleryType = type;
+            const modal = document.getElementById('galleryModal');
+            const title = document.getElementById('galleryTitle');
+            const uploadIcon = document.getElementById('uploadIcon');
+            const uploadSubtext = document.getElementById('uploadSubtext');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (type === 'images') {
+                title.textContent = '🖼️ Images Gallery';
+                uploadIcon.textContent = '🖼️';
+                uploadSubtext.textContent = 'Supported: JPG, PNG, GIF, WebP (max 10MB)';
+                fileInput.accept = 'image/*';
+            } else {
+                title.textContent = '🎥 Videos Gallery';
+                uploadIcon.textContent = '🎥';
+                uploadSubtext.textContent = 'Supported: MP4, MOV, AVI, WebM (max 10MB)';
+                fileInput.accept = 'video/*';
+            }
+            
+            modal.classList.add('active');
+            renderMediaGrid(type);
+        }
+        
+        function closeGallery() {
+            const modal = document.getElementById('galleryModal');
+            modal.classList.remove('active');
+            currentGalleryType = null;
+        }
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Media card clicks
+            document.getElementById('imagesCard').addEventListener('click', () => {
+                console.log('Images card clicked');
+                openGallery('images');
             });
             
-            // Logo interaction
-            const logo = document.querySelector('.logo');
-            logo.addEventListener('click', function() {
-                this.style.animation = 'logoFloat 0.8s ease-in-out, rotateBorder 1s linear';
-                setTimeout(() => {
-                    this.style.animation = 'logoFloat 4s ease-in-out infinite';
-                }, 800);
+            document.getElementById('videosCard').addEventListener('click', () => {
+                console.log('Videos card clicked');
+                openGallery('videos');
             });
             
-            // Card hover effects with sound simulation
-            const cards = document.querySelectorAll('.holo-card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-10px) rotateX(5deg) scale(1.02)';
+            // Socials card click
+            document.getElementById('socialsCard').addEventListener('click', () => {
+                console.log('Socials card clicked');
+                window.open('https://x.com/gigimascot', '_blank');
+            });
+            
+            // Close gallery
+            document.getElementById('closeGallery').addEventListener('click', closeGallery);
+            
+            // Click outside modal to close
+            document.getElementById('galleryModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeGallery();
+                }
+            });
+            
+            // Upload zone interactions
+            const uploadZone = document.getElementById('uploadZone');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (uploadZone && fileInput) {
+                uploadZone.addEventListener('click', () => fileInput.click());
+                
+                fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        handleFiles(e.target.files);
+                    }
                 });
                 
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0px) rotateX(0deg) scale(1)';
+                // Drag and drop
+                uploadZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadZone.classList.add('dragover');
                 });
-            });
+                
+                uploadZone.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    uploadZone.classList.remove('dragover');
+                });
+                
+                uploadZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadZone.classList.remove('dragover');
+                    
+                    if (e.dataTransfer.files.length > 0) {
+                        handleFiles(e.dataTransfer.files);
+                    }
+                });
+            }
             
-            // Neon button extra effects and CA copy functionality
-            const button = document.querySelector('.neon-button');
+            // Copy CA button
+            const copyButton = document.getElementById('copyCAButton');
             const caAddress = 'AffEYUREUD86nR3hRUE7wzpsFhPu9oZQKDtNY5FsjyCp';
             
-            button.addEventListener('click', function(e) {
+            copyButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 
-                // Copy to clipboard
-                navigator.clipboard.writeText(caAddress).then(() => {
-                    // Visual feedback
-                    const originalText = this.textContent;
-                    this.textContent = 'Copied!';
-                    this.style.background = 'rgba(76, 175, 80, 0.3)';
-                    this.style.borderColor = '#4CAF50';
-                    this.style.color = '#4CAF50';
-                    
-                    // Animation effect
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1.05)';
-                    }, 100);
-                    
-                    // Reset after 2 seconds
-                    setTimeout(() => {
-                        this.textContent = originalText;
-                        this.style.background = 'transparent';
-                        this.style.borderColor = '#00ffff';
-                        this.style.color = '#00ffff';
-                        this.style.transform = 'scale(1)';
-                    }, 2000);
-                }).catch(() => {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(caAddress).then(() => {
+                        showCopiedFeedback(this);
+                    }).catch(() => {
+                        // Fallback
+                        fallbackCopyTextToClipboard(caAddress);
+                        showCopiedFeedback(this);
+                    });
+                } else {
                     // Fallback for older browsers
-                    this.textContent = 'Copy failed';
-                    setTimeout(() => {
-                        this.textContent = 'Copy CA';
-                    }, 2000);
-                });
+                    fallbackCopyTextToClipboard(caAddress);
+                    showCopiedFeedback(this);
+                }
+            });
+            
+            function fallbackCopyTextToClipboard(text) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                } catch (err) {
+                    console.error('Fallback: Could not copy text: ', err);
+                }
+                
+                document.body.removeChild(textArea);
+            }
+            
+            function showCopiedFeedback(button) {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = 'rgba(76, 175, 80, 0.3)';
+                button.style.borderColor = '#4CAF50';
+                button.style.color = '#4CAF50';
+                button.style.transform = 'scale(0.95)';
+                
+                setTimeout(() => {
+                    button.style.transform = 'scale(1.05)';
+                }, 100);
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = 'transparent';
+                    button.style.borderColor = '#00ffff';
+                    button.style.color = '#00ffff';
+                    button.style.transform = 'scale(1)';
+                }, 2000);
+            }
+            
+            // Logo click effect with lightning animation
+            const logo = document.getElementById('logo');
+            logo.addEventListener('click', function() {
+                // Create lightning flash effect
+                this.style.animation = 'logoFloat 0.8s ease-in-out';
+                this.style.filter = `
+                    drop-shadow(0 0 60px rgba(0, 255, 255, 1))
+                    drop-shadow(0 0 100px rgba(33, 150, 243, 1))
+                    drop-shadow(0 0 140px rgba(255, 255, 255, 0.8))
+                `;
+                
+                // Flash effect
+                let flashCount = 0;
+                const flashInterval = setInterval(() => {
+                    if (flashCount % 2 === 0) {
+                        this.style.boxShadow = `
+                            0 0 80px rgba(255, 255, 255, 1),
+                            0 0 120px rgba(0, 255, 255, 1),
+                            0 0 160px rgba(33, 150, 243, 0.8)
+                        `;
+                    } else {
+                        this.style.boxShadow = 'none';
+                    }
+                    
+                    flashCount++;
+                    if (flashCount > 6) {
+                        clearInterval(flashInterval);
+                        this.style.boxShadow = 'none';
+                        this.style.filter = 'drop-shadow(0 0 20px rgba(0, 255, 255, 0.8))';
+                        this.style.animation = 'logoFloat 4s ease-in-out infinite';
+                    }
+                }, 80);
             });
             
             // Random glitch effect on title
@@ -812,6 +1483,45 @@
                 }
             }, 3000);
         });
+        
+        // Handle mobile
+        document.addEventListener('touchstart', function(e) {
+            // Enable touch events
+        });
+        
+        // Visibility change handler
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                // Pause animations when tab is not visible
+                document.body.style.animationPlayState = 'paused';
+            } else {
+                // Resume animations when tab becomes visible
+                document.body.style.animationPlayState = 'running';
+            }
+        });
+        
+        // Performance optimization - reduce effects on mobile
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+        
+        if (isMobile()) {
+            // Reduce trail effects on mobile for better performance
+            maxTrails = 5;
+        }
+        
+        // Add click feedback for mobile
+        document.addEventListener('touchend', function(e) {
+            const target = e.target.closest('.media-card, .neon-button, .logo');
+            if (target) {
+                target.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    target.style.transform = '';
+                }, 150);
+            }
+        });
+        
+        console.log('🎭 GIGI Website loaded successfully! 🚀');
     </script>
 </body>
 </html>
