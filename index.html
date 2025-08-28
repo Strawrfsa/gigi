@@ -1905,10 +1905,9 @@
                     mediaItem.innerHTML = `
                         <img src="${publicUrl}" alt="${file.name}" loading="lazy" 
                              onerror="this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;color:#ff5722;\\'>❌ Error loading</div>'">
-                        <div class="heart-button ${isLiked ? 'liked' : ''}" data-file-id="${fileId}">
-                            ${isLiked ? '❤️' : '🤍'}
-                            ${heartCount > 0 ? `<div class="heart-count">${heartCount}</div>` : ''}
-                        </div>
+                            <div class="heart-button ${isLiked ? 'liked' : ''}" data-file-id="${fileId}">
+                                ${isLiked ? '❤️' : '🤍'}
+                            </div>
                     `;
                     
                     // Click to view in modal
@@ -1926,7 +1925,6 @@
                         <div class="video-overlay">▶</div>
                         <div class="heart-button ${isLiked ? 'liked' : ''}" data-file-id="${fileId}">
                             ${isLiked ? '❤️' : '🤍'}
-                            ${heartCount > 0 ? `<div class="heart-count">${heartCount}</div>` : ''}
                         </div>
                     `;
                     
@@ -2338,11 +2336,7 @@
                 heartButton.classList.add('liked');
                 heartButton.innerHTML = '❤️';
                 
-                // Add or update heart count
-                const newCount = currentCount + 1;
-                if (newCount > 0) {
-                    heartButton.innerHTML = `❤️<div class="heart-count">${newCount}</div>`;
-                }
+                    heartButton.innerHTML = '❤️';
                 
                 showStatus('❤️ Thanks for the love!', 'success');
             } else {
@@ -2352,11 +2346,6 @@
                 setHeartCount(fileId, newCount);
                 heartButton.classList.remove('liked');
                 heartButton.innerHTML = '🤍';
-                
-                // Update heart count
-                if (newCount > 0) {
-                    heartButton.innerHTML = `🤍<div class="heart-count">${newCount}</div>`;
-                }
             }
         }
         
