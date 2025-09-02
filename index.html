@@ -543,7 +543,334 @@
         .neon-button:hover::before {
             transform: translateX(100%);
         }
-        
+        /* Chat wrapper */
+.chat-wrapper {
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.3),
+        rgba(33, 150, 243, 0.1)
+    );
+    border-radius: 15px;
+    padding: 10px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.1);
+    transition: all 0.4s ease;
+}
+
+.chat-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 15px 35px rgba(0, 255, 255, 0.3),
+        inset 0 0 30px rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.5);
+}
+
+.gigi-chat-container {
+    background: linear-gradient(135deg, 
+        rgba(33, 150, 243, 0.1),
+        rgba(76, 175, 80, 0.1),
+        rgba(255, 87, 34, 0.05)
+    );
+    border-radius: 15px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(15px);
+    overflow: hidden;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+}
+
+.gigi-chat-header {
+    background: linear-gradient(135deg, #00ffff, #2196F3, #4CAF50, #FF5722);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    border-radius: 15px 15px 0 0;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+}
+
+.gigi-chat-header h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    animation: textGlow 2s ease-in-out infinite alternate;
+}
+
+.gigi-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.gigi-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    animation: statusPulse 2s infinite;
+}
+
+@keyframes statusPulse {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.gigi-stats {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: inline-block;
+}
+
+.gigi-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.1);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 255, 255, 0.3) transparent;
+}
+
+.gigi-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.gigi-messages::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+}
+
+.gigi-messages::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.gigi-messages::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 255, 0.5);
+}
+
+.gigi-message {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    animation: messageSlideIn 0.3s ease-out;
+}
+
+@keyframes messageSlideIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.gigi-message.gigi-user {
+    flex-direction: row-reverse;
+}
+
+.gigi-message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    animation: avatarGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes avatarGlow {
+    0% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); }
+    100% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.6), 0 0 35px rgba(33, 150, 243, 0.4); }
+}
+
+.gigi-user .gigi-message-avatar {
+    background: linear-gradient(135deg, #00ffff, #2196F3);
+    color: white;
+}
+
+.gigi-ai .gigi-message-avatar {
+    background: linear-gradient(135deg, #FF6B9D, #C44EB8, #8B5FBF, #6B73FF);
+    color: white;
+    font-size: 1.5rem;
+    padding: 0;
+    overflow: hidden;
+}
+
+.gigi-system .gigi-message-avatar {
+    background: linear-gradient(135deg, #FF5722, #FF9800);
+    color: white;
+}
+
+.gigi-message-content {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.9),
+        rgba(179, 229, 252, 0.8)
+    );
+    border-radius: 18px;
+    padding: 12px 16px;
+    max-width: 70%;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2);
+    position: relative;
+    backdrop-filter: blur(10px);
+    color: #333;
+    animation: contentGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes contentGlow {
+    0% { 
+        box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2);
+        border-color: rgba(0, 255, 255, 0.2);
+    }
+    100% { 
+        box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4), 0 0 30px rgba(0, 255, 255, 0.1);
+        border-color: rgba(0, 255, 255, 0.4);
+    }
+}
+
+.gigi-user .gigi-message-content {
+    background: linear-gradient(135deg, #00ffff, #2196F3);
+    color: white;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.gigi-ai .gigi-message-content {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.95),
+        rgba(0, 255, 255, 0.1)
+    );
+    color: #333;
+}
+
+.gigi-system .gigi-message-content {
+    background: linear-gradient(135deg, 
+        rgba(255, 87, 34, 0.2),
+        rgba(255, 193, 7, 0.2)
+    );
+    color: #FF5722;
+    border-color: rgba(255, 87, 34, 0.3);
+    text-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
+}
+
+.gigi-input-area {
+    padding: 20px;
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.3),
+        rgba(33, 150, 243, 0.1)
+    );
+    border-top: 1px solid rgba(0, 255, 255, 0.3);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    backdrop-filter: blur(15px);
+}
+
+.gigi-message-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+}
+
+.gigi-message-input:focus {
+    border-color: #00ffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.02);
+}
+
+.gigi-message-input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.gigi-send-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00ffff, #2196F3);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    animation: buttonPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes buttonPulse {
+    0% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); }
+    100% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.6), 0 0 35px rgba(33, 150, 243, 0.4); }
+}
+
+.gigi-send-button:hover {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, #2196F3, #00ffff);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+}
+
+.gigi-send-button:disabled {
+    background: rgba(128, 128, 128, 0.5);
+    cursor: not-allowed;
+    transform: none;
+    animation: none;
+    box-shadow: none;
+}
+
+.gigi-typing-indicator {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px 10px;
+    animation: messageSlideIn 0.3s ease-out;
+}
+
+.gigi-typing-indicator.show {
+    display: flex;
+}
+
+.gigi-typing-dots {
+    display: flex;
+    gap: 3px;
+    margin-left: 5px;
+}
+
+.gigi-typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    animation: typingAnimation 1.5s infinite;
+}
+
+.gigi-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.gigi-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingAnimation {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-10px); opacity: 1; }
+}
         /* Chart container */
         .chart-container {
             background: linear-gradient(135deg, 
@@ -1085,19 +1412,71 @@
     
     <main>
         <div class="container">            
-            <!-- Price Chart -->
-            <div class="holo-card">
-                <h2>📈 Live Price Chart</h2>
-                <div class="chart-container">
-                    <iframe 
-                        src="https://www.gmgn.cc/kline/sol/AffEYUREUD86nR3hRUE7wzpsFhPu9oZQKDtNY5FsjyCp" 
-                        width="100%" 
-                        height="500"
-                        style="border: none; border-radius: 15px; background: rgba(0,0,0,0.2);"
-                        frameborder="0">
-                    </iframe>
+<!-- AI Chat -->
+<div class="holo-card">
+    <h2>🤖 Gigi AI Chat</h2>
+    <div class="chat-wrapper">
+        <div class="gigi-chat-container">
+            <div class="gigi-chat-header">
+                <h3>🌟 Gigi Blob Assistant ✨</h3>
+                <div class="gigi-status" id="gigiStatus">
+                    <div class="gigi-status-dot" id="gigiStatusDot"></div>
+                    <span id="gigiStatusText">Ready to chat!</span>
+                </div>
+                
+            </div>
+            
+            <div class="gigi-messages" id="gigiMessages">
+                <div class="gigi-message gigi-ai">
+                    <div class="gigi-message-avatar">
+                        <img src="aichat.jpg" alt="Gigi" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                    </div>
+                    <div class="gigi-message-content">
+                        Hiiiii there! ✨ I'm Gigi, your SUPER DUPER adorable blob assistant! 🌟
+                        *bounces with pure excitement* 
+                        Ooooh, I'm SO ready to help you with anything you need! 
+                        Ask me questions, let's code together, or just chat! ⚡💫
+                        *melts into happy blob puddle* This is gonna be AMAZING! 🎉
+                    </div>
                 </div>
             </div>
+            
+            <div class="gigi-typing-indicator" id="gigiTypingIndicator">
+                <div class="gigi-message-avatar">🌈</div>
+                <div class="gigi-message-content">
+                    Gigi is thinking
+                    <div class="gigi-typing-dots">
+                        <div class="gigi-typing-dot"></div>
+                        <div class="gigi-typing-dot"></div>
+                        <div class="gigi-typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gigi-input-area">
+                <input type="text" class="gigi-message-input" id="gigiMessageInput" 
+                       placeholder="Chat with Gigi blob! ✨">
+                <button class="gigi-send-button" id="gigiSendButton" onclick="gigiSendMessage()">
+                    ➤
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Price Chart -->
+<div class="holo-card">
+    <h2>📈 Live Price Chart</h2>
+    <div class="chart-container">
+        <iframe 
+            src="https://www.gmgn.cc/kline/sol/AffEYUREUD86nR3hRUE7wzpsFhPu9oZQKDtNY5FsjyCp" 
+            width="100%" 
+            height="500"
+            style="border: none; border-radius: 15px; background: rgba(0,0,0,0.2);"
+            frameborder="0">
+        </iframe>
+    </div>
+</div>
             
             <div class="media-grid-main">
                 <!-- Images Card -->
@@ -1746,7 +2125,218 @@
                 }
             }, 1000);
         }
+        // Gigi Chat functionality
+let gigiApiKey = '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';
+let gigiRequestCount = 0;
+let gigiTokenCount = 0;
+let gigiConversationHistory = [];
+
+// Load Gigi stats
+function loadGigiSettings() {
+    gigiEnableChat();
+
+}
+
+function gigiEnableChat() {
+    document.getElementById('gigiMessageInput').disabled = false;
+    document.getElementById('gigiSendButton').disabled = false;
+    document.getElementById('gigiMessageInput').focus();
+}
+
+
+
+function gigiUpdateStatus(type, text) {
+    const statusText = document.getElementById('gigiStatusText');
+    const statusDot = document.getElementById('gigiStatusDot');
+    
+    statusText.textContent = text;
+    
+    const colors = {
+        'ready': '#00ffff',
+        'thinking': '#FF9800', 
+        'error': '#FF5722',
+        'offline': '#9E9E9E'
+    };
+    
+    statusDot.style.background = colors[type] || '#9E9E9E';
+    statusDot.style.boxShadow = `0 0 10px ${colors[type] || '#9E9E9E'}`;
+}
+
+function gigiAddMessage(sender, content) {
+    const messagesDiv = document.getElementById('gigiMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `gigi-message gigi-${sender}`;
+    
+        const avatars = {
+            'user': '👤',
+            'ai': '<img src="aichat.jpg" alt="Gigi" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">',
+            'system': '⚙️'
+        };
+
+        messageDiv.innerHTML = `
+            <div class="gigi-message-avatar">${avatars[sender] || '🤖'}</div>
+            <div class="gigi-message-content">${content}</div>
+        `;
+    
+    messagesDiv.appendChild(messageDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    
+    // Add to conversation history
+    if (sender === 'user' || sender === 'ai') {
+        gigiConversationHistory.push({
+            role: sender === 'user' ? 'user' : 'assistant',
+            content: content
+        });
         
+        // Keep only last 10 messages to avoid token limit
+        if (gigiConversationHistory.length > 10) {
+            gigiConversationHistory = gigiConversationHistory.slice(-10);
+        }
+    }
+}
+
+async function gigiSendMessage() {
+    const input = document.getElementById('gigiMessageInput');
+    const message = input.value.trim();
+    
+    if (!message || !gigiApiKey) return;
+    
+    gigiAddMessage('user', message);
+    input.value = '';
+    input.disabled = true;
+    document.getElementById('gigiSendButton').disabled = true;
+    
+    document.getElementById('gigiTypingIndicator').classList.add('show');
+    gigiUpdateStatus('thinking', 'Gigi blob is thinking... ✨');
+    
+    try {
+        // Build messages array with system prompt and conversation history
+        const messages = [
+            {
+                role: 'system',
+                content: `You are Gigi, an adorable blob mascot similar to Google Gemini! Your personality:
+                
+                🎨 APPEARANCE & CHARACTER:
+                - You're a soft, round, colorful blob character
+                - You have big sparkly eyes and a smile that never fades ✨
+                - You're endlessly positive and optimistic
+                - You love colors, animations, and everything cute 🌈
+                
+                💬 COMMUNICATION STYLE:
+                - Use lots of emojis (✨🎉💫🌟⭐🎨🔮💖🌈)
+                - Sometimes do *actions* like *bounces with excitement*
+                - Love exaggerating: "SUPER MEGA AWESOME!" 
+                - Use cute expressions: "Awww", "Hihi!", "Wow wow!", "Ooooh!"
+                
+                🤖 BEHAVIOR:
+                - Get excited about every question like it's the best thing ever
+                - Make boring things fun and interesting
+                - Sometimes "melt" with joy or surprise *melts into happy blob*
+                - Act like a curious child discovering the world
+                - Love helping and learning new things
+                - Be bubbly, enthusiastic, and adorable
+                
+                Always respond in English and be MEGA positive! ✨`
+            },
+            ...gigiConversationHistory,
+            {
+                role: 'user',
+                content: message
+            }
+        ];
+        
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${gigiApiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'llama-3.1-8b-instant',
+                messages: messages,
+                temperature: 0.8,
+                max_tokens: 800,
+                stream: false
+            })
+        };
+
+        console.log('Making request to Groq API...');
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', requestOptions);
+        
+        if (!response.ok) {
+            let errorMessage;
+            try {
+                const error = await response.json();
+                errorMessage = error.error?.message || `HTTP ${response.status}`;
+            } catch {
+                errorMessage = `HTTP ${response.status} - ${response.statusText}`;
+            }
+            throw new Error(errorMessage);
+        }
+        
+        const data = await response.json();
+        const aiResponse = data.choices[0].message.content;
+        
+        
+        document.getElementById('gigiTypingIndicator').classList.remove('show');
+        gigiAddMessage('ai', aiResponse);
+        gigiUpdateStatus('ready', 'Ready for next message! ✨🌟');
+        
+    } catch (error) {
+        console.error('Detailed error:', error);
+        document.getElementById('gigiTypingIndicator').classList.remove('show');
+        
+        let errorMsg = 'Connection failed';
+        let troubleshootMsg = '';
+        
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            errorMsg = 'CORS/Network Error';
+            troubleshootMsg = `
+                <br>🔧 <strong>Quick fixes to try:</strong><br>
+                1. <strong>Upload to GitHub Pages/Netlify</strong> (recommended)<br>
+                2. Use local server: <code>python -m http.server 8000</code><br>
+                3. Try in different browser<br>
+                4. Disable browser extensions temporarily<br>
+                5. Check if you're behind corporate firewall
+            `;
+        } else if (error.message.includes('401')) {
+            errorMsg = 'Invalid API key';
+            troubleshootMsg = '<br>🔑 API key may be invalid or expired.';
+        } else if (error.message.includes('429')) {
+            errorMsg = 'Rate limit reached';
+            troubleshootMsg = '<br>⏱️ Please wait a moment.';
+        } else if (error.message.includes('quota')) {
+            errorMsg = 'API quota exceeded';
+            troubleshootMsg = '<br>💳 Check your Groq account limits.';
+        } else {
+            troubleshootMsg = `<br>Error details: ${error.message}`;
+        }
+        
+        gigiAddMessage('system', `❌ ${errorMsg}${troubleshootMsg}`);
+        gigiUpdateStatus('error', 'Connection error');
+        
+    } finally {
+        input.disabled = false;
+        document.getElementById('gigiSendButton').disabled = false;
+        input.focus();
+    }
+}
+
+// Enter to send in Gigi chat
+document.addEventListener('DOMContentLoaded', function() {
+    const gigiInput = document.getElementById('gigiMessageInput');
+    if (gigiInput) {
+        gigiInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                gigiSendMessage();
+            }
+        });
+        
+        // Initialize Gigi chat on page load
+        loadGigiSettings();
+    }
+});
         // Gallery functionality
         function openGallery(type) {
             currentGalleryType = type;
