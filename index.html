@@ -2119,23 +2119,35 @@ function gigiEnableChat() {
 
 
 
+// Opravená funkcia gigiUpdateStatus pre váš pôvodný kód
 function gigiUpdateStatus(type, text) {
+    // Namiesto hľadania neexistujúcich elementov, použite console.log
+    console.log(`Gigi Status: ${type} - ${text}`);
+    
+    // Alebo ak chcete skutočne aktualizovať status v UI, pridajte správne elementy:
+    // V HTML pridajte: <span id="gigiStatusText">Ready!</span>
+    // A: <div id="gigiStatusDot" class="gigi-status-dot"></div>
+    
+    // Potom môžete používať:
     const statusText = document.getElementById('gigiStatusText');
     const statusDot = document.getElementById('gigiStatusDot');
     
-    statusText.textContent = text;
+    if (statusText) {
+        statusText.textContent = text;
+    }
     
-    const colors = {
-        'ready': '#00ffff',
-        'thinking': '#FF9800', 
-        'error': '#FF5722',
-        'offline': '#9E9E9E'
-    };
-    
-    statusDot.style.background = colors[type] || '#9E9E9E';
-    statusDot.style.boxShadow = `0 0 10px ${colors[type] || '#9E9E9E'}`;
+    if (statusDot) {
+        const colors = {
+            'ready': '#00ffff',
+            'thinking': '#FF9800', 
+            'error': '#FF5722',
+            'offline': '#9E9E9E'
+        };
+        
+        statusDot.style.background = colors[type] || '#9E9E9E';
+        statusDot.style.boxShadow = `0 0 10px ${colors[type] || '#9E9E9E'}`;
+    }
 }
-
 function gigiAddMessage(sender, content) {
     const messagesDiv = document.getElementById('gigiMessages');
     const messageDiv = document.createElement('div');
